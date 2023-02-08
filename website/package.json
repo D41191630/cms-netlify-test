@@ -1,0 +1,51 @@
+{
+  "name": "netlify-cms-site",
+  "version": "1.0.0",
+  "description": "Netlify CMS documentation website built with Gatsby",
+  "scripts": {
+    "start": "gatsby develop",
+    "build": "gatsby build && mv public dist",
+    "copy:contribs": "cp ../.all-contributorsrc data/contributors.json",
+    "prepare": "npm run copy:contribs",
+    "reset": "rm -rf .cache"
+  },
+  "author": "",
+  "homepage": "https://www.netlifycms.org/",
+  "license": "MIT",
+  "dependencies": {
+    "@emotion/core": "^10.0.27",
+    "@emotion/styled": "^10.0.27",
+    "dayjs": "^1.8.19",
+    "emotion-theming": "^10.0.27",
+    "gatsby": "2.19.12",
+    "gatsby-plugin-catch-links": "2.1.25",
+    "gatsby-plugin-emotion": "^4.1.22",
+    "gatsby-plugin-manifest": "2.2.41",
+    "gatsby-plugin-netlify-cms": "^4.1.38",
+    "gatsby-plugin-react-helmet": "3.1.22",
+    "gatsby-remark-autolink-headers": "2.1.24",
+    "gatsby-remark-external-links": "^0.0.4",
+    "gatsby-remark-prismjs": "3.3.31",
+    "gatsby-source-filesystem": "2.1.48",
+    "gatsby-transformer-json": "2.2.26",
+    "gatsby-transformer-remark": "2.6.50",
+    "gatsby-transformer-yaml": "2.2.24",
+    "lodash": "^4.17.15",
+    "moment": "^2.24.0",
+    "netlify-cms-app": "^2.11.13",
+    "prismjs": "^1.19.0",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0",
+    "react-github-btn": "^1.1.1",
+    "react-helmet": "^5.2.1",
+    "react-markdown": "^4.3.1",
+    "smooth-scroll": "^16.1.2"
+  },
+  "devDependencies": {
+    "babel-plugin-prismjs": "^2.0.1",
+    "babel-preset-gatsby": "^0.2.28",
+    "eslint": "^6.8.0",
+    "eslint-plugin-import": "^2.20.1"
+  },
+  "private": true
+}
