@@ -1,0 +1,44 @@
+{
+  "presets": [
+    "react",
+    ["env", {
+      "modules": false
+    }]
+  ],
+  "plugins": [
+    "lodash",
+    ["babel-plugin-transform-builtin-extend", {
+      "globals": ["Error"]
+    }],
+    ["transform-runtime", {
+      "useBuiltIns": true,
+      "useESModules": true
+    }],
+    ["module-resolver", {
+      "root": [
+        "./src/components"
+      ],
+      "alias": {
+        "Actions": "./src/actions/",
+        "Backends": "./src/backends/",
+        "Constants": "./src/constants/",
+        "Formats": "./src/formats/",
+        "Integrations": "./src/integrations/",
+        "Lib": "./src/lib/",
+        "Reducers": "./src/reducers/",
+        "Redux": "./src/redux/",
+        "Routing": "./src/routing/",
+        "ValueObjects": "./src/valueObjects/",
+      }
+    }],
+    "transform-export-extensions",
+    "transform-class-properties",
+    "transform-object-rest-spread",
+    "react-hot-loader/babel",
+  ],
+  "env": {
+    "test": {
+      "plugins": ["transform-es2015-modules-commonjs"]
+    }
+  }
+}

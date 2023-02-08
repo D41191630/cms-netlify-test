@@ -1,0 +1,13 @@
+{
+  "extends": [
+    "eslint-config-netlify"
+  ],
+  "settings": {
+    "import/resolver": {
+      "babel-module": {}
+    }
+  },
+  "globals": {
+    "CMS_ENV": true
+  }
+}
