@@ -1,0 +1,95 @@
+name: $(BuildDefinitionName)_$(SourceBranchName)_$(Date:yyyyMMdd)$(Rev:.r)
+trigger: 
+  branches:
+    include:
+    - dev
+    - qa
+# trigger:
+#   branches:
+#     include:
+#     #- dev-test
+#     - main
+#     - repo_structure_creation
+#     #- SemVer1
+#   paths:
+#     include:
+#     - /*
+#     - projects/student/*
+#     - projects/faculty/*
+pool:
+  vmImage: 'ubuntu-latest'
+parameters:
+- name: student
+  type: boolean
+  default: false
+stages:
+- stage: CMS
+  displayName: 'CMS'
+  jobs:
+   - job: CMS
+     steps:
+      - script: echo "CMS build run"
+
+- stage: Source_Build
+  displayName: 'Source_Build'
+  dependsOn: 
+  - CMS
+  condition: succeeded( 'CMS' )
+  jobs:
+   - job: SourceBuild
+     steps:
+      - script: echo "source build run"
+
+- stage: Assets_Build
+  displayName: 'Assets_Build'
+  dependsOn: 
+  - CMS
+  condition: succeeded( 'CMS' )
+  jobs:
+   - job: AssetsBuild
+     steps:
+      - script: echo "true"
+- stage: Full_Build
+  displayName: 'Full_Build'
+  dependsOn: 
+  - CMS
+  condition: succeeded( 'CMS' )
+  jobs:
+   - job: FullBuild
+     steps:
+      - script: echo "full build run"
+
+- stage: Dev
+  displayName: 'Dev'
+  dependsOn: 
+  - Source_Build
+  - Assets_Build
+  - Full_Build
+  - CMS
+  condition: and(eq(variables['build.sourceBranch'], 'refs/heads/dev'), or(succeeded( 'Source_Build' ), succeeded( 'Assets_Build' ), succeeded( 'Full_Build' )))
+  jobs:
+  - template: CMS/CMS_dev_stage_build.yml
+# - stage: Qa
+#   displayName: 'Qa'
+#   dependsOn: 
+#   - Source_Build
+#   - Assets_Build
+#   - Full_Build
+#   - CMS
+#   condition: and(eq(variables['build.sourceBranch'], 'refs/heads/qa'), or(succeeded( 'Source_Build' ), succeeded( 'Assets_Build' ), succeeded( 'Full_Build' )))
+#   jobs:
+#   - template: CMS/CMS_qa_stage_build.yml
+# #      parameters:
+# #        student:  ${{ parameters.student }}
+# - stage: Prod
+#   displayName: 'Prod'
+#   dependsOn: 
+#   - Source_Build
+#   - Assets_Build
+#   - Full_Build
+#   - CMS
+#   condition: and(eq('${{ parameters.student }}', true), or(succeeded( 'Source_Build' ), succeeded( 'Assets_Build' ), succeeded( 'Full_Build' )))
+#   jobs:
+#   - template: CMS/CMS_prod_stage_build.yml
+#     parameters:
+#       student:  ${{ parameters.student }}

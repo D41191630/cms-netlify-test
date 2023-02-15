@@ -1,0 +1,85 @@
+parameters:
+  student: ''
+steps:  
+# - task: Npm@1
+#   displayName: Install Angular Cli
+#   enabled: True
+#   inputs:
+#     command: custom
+#     verbose: true
+#     customCommand: install -g @angular/cli
+- task: NodeTool@0
+  inputs:
+    versionSpec: '14.x'
+    displayName: 'Install Node.js'  
+- script: |
+    npm install -g @angular/cli
+    npm install
+  displayName: 'Install Angular and Dependencies'
+# - script: |
+#     echo "${{ parameters.applicationname }}: $(env-lower): $(ENV)"
+# - task: Npm@1
+#   displayName: Build Application
+#   enabled: True
+#   inputs:
+#     command: custom
+#     verbose: true
+#     customCommand: 'run build:rusm:student:$(env-lower)' 
+# - script: |    
+        #ng build --project=${{ parameters.applicationname }} --configuration=walden-$(env-lower)
+    #--project=student --configuration=walden-dev
+# - script: |
+     #ls '$(System.DefaultWorkingDirectory)/projects/${{ parameters.applicationname }}/dist'
+# - task: CopyFiles@2
+#   displayName: 'copy dist/${{ parameters.microappname }}  folder'
+#   inputs:
+#     #SourceFolder: '$(System.DefaultWorkingDirectory)/projects/${{ parameters.applicationname }}/dist/**'
+#     contents:  '$(System.DefaultWorkingDirectory)/projects/${{ parameters.applicationname }}/dist/*'
+
+#     # !'$(System.DefaultWorkingDirectory)/projects/${{ parameters.applicationname }}/dist/assets'
+#     targetFolder: '$(Build.ArtifactStagingDirectory)/${{ parameters.applicationname }}/$(UNIV)/build/source'
+- task: CopyFiles@2
+  displayName: 'copy source  folder'
+  inputs:
+    SourceFolder: '$(System.DefaultWorkingDirectory)/dev-test/*'
+    contents: |
+       **
+       !assets/**
+    # !'$(System.DefaultWorkingDirectory)/projects/${{ parameters.applicationname }}/dist/assets'
+    targetFolder: '$(Build.ArtifactStagingDirectory)/src/$(UNIV)/build/$(ENV)/source'
+# - task: CopyFiles@2
+#   displayName: 'copy dist/${{ parameters.microappname }}  folder'
+#   inputs:
+#     #SourceFolder: '$(System.DefaultWorkingDirectory)/projects/${{ parameters.applicationname }}/dist/**'
+#     contents: '$(System.DefaultWorkingDirectory)/projects/${{ parameters.applicationname }}/dist/assets/**'
+#     #!'$(System.DefaultWorkingDirectory)/projects/${{ parameters.applicationname }}/dist/assets'
+#     targetFolder: '$(Build.ArtifactStagingDirectory)/${{ parameters.applicationname }}/$(UNIV)/build//$(ENV)/'
+- task: CopyFiles@2
+  displayName: 'copy assets'
+  inputs:
+    SourceFolder: '$(System.DefaultWorkingDirectory)/img/*'
+    contents: |
+      assets/**
+    #!'$(System.DefaultWorkingDirectory)/projects/${{ parameters.applicationname }}/dist/assets'
+    targetFolder: '$(Build.ArtifactStagingDirectory)/student/$(UNIV)/build/$(ENV)/'
+# - task: CopyFiles@2
+#   displayName: 'copy deployment script'
+#   inputs:
+#     SourceFolder: 'projects/student/src/universities/rusm/deployment-scripts/'
+#     contents: |
+#       *deployment.ps1
+#     targetFolder: '$(Build.ArtifactStagingDirectory)/student/$(UNIV)/build/$(ENV)/'
+# - task: CopyFiles@2
+#   displayName: 'copy firebase.json'
+#   inputs:
+#     SourceFolder: '$(System.DefaultWorkingDirectory)/'
+#     contents: |
+#       firebase.json
+#     #!'$(System.DefaultWorkingDirectory)/projects/${{ parameters.applicationname }}/dist/assets'
+#     targetFolder: '$(Build.ArtifactStagingDirectory)/student/$(UNIV)/build/$(ENV)/'
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish $(ENV) artifact'
+  inputs:
+    pathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    artifactName: Artifacts
+    #$(UNIV)_${{ parameters.applicationname }}_artifact_$(env)

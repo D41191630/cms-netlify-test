@@ -1,0 +1,13 @@
+# parameters:
+#   student: ''
+jobs:
+- job: CMS_student_FullBuild
+  condition: and(in(stageDependencies.Full_Build.FullBuild.result, 'Succeeded'), in(stageDependencies.CMS.CMS.result, 'Succeeded'), eq(variables['build.sourceBranch'], 'refs/heads/dev'))
+  variables:
+   ENV: 'DEV'
+   env-lower: 'dev'
+   UNIV: CMS
+  steps:
+  - template: CMS_full_build.yml
+#     parameters:
+#       applicationname: 'student'
